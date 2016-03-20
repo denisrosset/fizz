@@ -7,8 +7,8 @@ import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
 // Tutorial: edit the following variables
 
 val REPO = "git@github.com:denisrosset/fizzdoc.git"
-val NAME = "fizzdoc`
-val ORG = `org.fizzorg`
+val NAME = "fizzdoc"
+val ORG = "org.fizzorg"
 
 // **************************************
 
@@ -17,7 +17,7 @@ lazy val tutorialSubDirName = settingKey[String]("Website tutorial directory")
 lazy val buildSettings = Seq(
   name := "fizzdoc",
   organization := ORG,
-  scalaVersion := "2.11.8",
+  scalaVersion := "2.11.8"
 )
 
 //lazy val fizzdocDoctestSettings = Seq(

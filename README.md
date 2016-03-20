@@ -4,16 +4,17 @@
 
 This template builds using SBT, with the following sub-projects:
 
-- `fizzbuzz` is the root project,
+- `fizzdoc` is the root project,
 - `core` contains the Scala code files for the project,
 - `docs` contains the website and the `tut` documentation. 
 
 In the documentation below, we use the following placeholders:
 
-- `NAME` is the name of the project (default: `fizzdoc`),
+- `NAME` is the name of the project (default: `fizzdoc`), for simplicity, we assume
+  this coincides with the name of the GitHub repository,
 - `USER` is your GitHub user name,
+- `REPO = git@github.com:USER/NAME.git` is the name of the remote repository,
 - `ORG` is the name of the organization used in `build.sbt` (default: `org.fizzorg`),
-- `REPO` is the name of the remote repository,
 - `HASH` is an unique hash generated automatically by `sbt-site`/`sbt-ghpages`.
 
 ### 1. Install the required tools
@@ -58,7 +59,7 @@ Note: the preview task from `sbt-site` does not work with this template.
 
 - run `sbt ghpages-push-site`.
 
-- navigate to `http://USER.github.io/fizzdoc` .
+- navigate to `http://USER.github.io/NAME` .
 
 ### Copyright and License
 
