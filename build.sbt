@@ -2,13 +2,22 @@ import com.typesafe.sbt.SbtSite.SiteKeys._
 import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
 import sbtunidoc.Plugin.UnidocKeys._
 
+// **************************************
+// Tutorial: edit the following variables
+
+val gitRemoteRepo = "git@github.com:denisrosset/fizzdoc.git"
+
+// **************************************
+
+
+
 lazy val buildSettings = Seq(
-  organization := "org.fizzbuzz",
+  organization := "org.fizzdoc",
   scalaVersion := "2.11.8",
   crossScalaVersions := Seq("2.10.6", "2.11.8")
 )
 
-//lazy val fizzbuzzDoctestSettings = Seq(
+//lazy val fizzdocDoctestSettings = Seq(
 //  doctestWithDependencies := false
 //) ++ doctestSettings
 
@@ -21,9 +30,9 @@ lazy val commonJvmSettings = Seq(
   testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oDF")
 // currently sbt-doctest doesn't work in JS builds, so this has to go in the
 // JVM settings. https://github.com/tkawachi/sbt-doctest/issues/52
-) //++ fizzbuzzDoctestSettings
+) //++ fizzdocDoctestSettings
 
-lazy val fizzbuzzSettings = buildSettings ++ commonSettings ++ commonJvmSettings
+lazy val fizzdocSettings = buildSettings ++ commonSettings ++ commonJvmSettings
 
 lazy val docSettings = Seq(
   autoAPIMappings := true,
@@ -37,13 +46,13 @@ lazy val docSettings = Seq(
     "-sourcepath", baseDirectory.in(LocalRootProject).value.getAbsolutePath,
     "-diagrams"
   ),*/
-  git.remoteRepo := "git@github.com:denisrosset/fizzdoc.git",
+  git.remoteRepo := gitRemoteRepo,
   includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
 )
 
 lazy val docs = (project in file("docs"))
-  .settings(moduleName := "fizzbuzz-docs")
-  .settings(fizzbuzzSettings)
+  .settings(moduleName := "fizzdoc-docs")
+  .settings(fizzdocSettings)
   .settings(noPublishSettings)
 //  .settings(unidocSettings)
   .settings(site.settings)
@@ -54,16 +63,16 @@ lazy val docs = (project in file("docs"))
   .settings(commonJvmSettings)
   .dependsOn(core)
 
-lazy val fizzbuzz = project.in(file("."))
-  .settings(moduleName := "root")
-  .settings(fizzbuzzSettings)
+lazy val fizzdoc = project.in(file("."))
+  .settings(moduleName := "fizzdoc")
+  .settings(fizzdocSettings)
   .settings(noPublishSettings)
   .aggregate(core, docs)
   .dependsOn(core)
 
 lazy val core = project.in(file("core"))
-  .settings(moduleName := "fizzbuzz-core")
-  .settings(fizzbuzzSettings:_*)
+  .settings(moduleName := "fizzdoc-core")
+  .settings(fizzdocSettings:_*)
   .settings(commonJvmSettings:_*)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
