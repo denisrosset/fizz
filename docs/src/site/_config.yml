@@ -1,8 +1,8 @@
 name: FizzBuzz documentation
 markdown: redcarpet
 highlighter: pygments
-baseurl: /cats
-apidocs: /cats/api/
+baseurl: /fizzdoc
+apidocs: /fizzdoc/api/
 sources: https://github.com/denisrosset/checked-doc-template/blob/master
 
 collections:
