@@ -1,20 +1,23 @@
-import com.typesafe.sbt.SbtSite.SiteKeys._
+//import com.typesafe.sbt.SbtSite.SiteKeys._
+import com.typesafe.sbt.site.util.SiteHelpers
 import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
-import sbtunidoc.Plugin.UnidocKeys._
+//import sbtunidoc.Plugin.UnidocKeys._
 
 // **************************************
 // Tutorial: edit the following variables
 
-val gitRemoteRepo = "git@github.com:denisrosset/fizzdoc.git"
+val REPO = "git@github.com:denisrosset/fizzdoc.git"
+val NAME = "fizzdoc`
+val ORG = `org.fizzorg`
 
 // **************************************
 
-
+lazy val tutorialSubDirName = settingKey[String]("Website tutorial directory")
 
 lazy val buildSettings = Seq(
-  organization := "org.fizzdoc",
+  name := "fizzdoc",
+  organization := ORG,
   scalaVersion := "2.11.8",
-  crossScalaVersions := Seq("2.10.6", "2.11.8")
 )
 
 //lazy val fizzdocDoctestSettings = Seq(
@@ -36,8 +39,9 @@ lazy val fizzdocSettings = buildSettings ++ commonSettings ++ commonJvmSettings
 
 lazy val docSettings = Seq(
   autoAPIMappings := true,
-//  site.addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), "api"),
-  site.addMappingsToSiteDir(tut, "_tut"),
+  //  site.addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), "api"),
+  tutorialSubDirName := "_tut",
+  addMappingsToSiteDir(tut, tutorialSubDirName),
   ghpagesNoJekyll := false,
   siteMappings += file("CONTRIBUTING.md") -> "contributing.md",
 /*  scalacOptions in (ScalaUnidoc, unidoc) ++= Seq(
@@ -46,7 +50,7 @@ lazy val docSettings = Seq(
     "-sourcepath", baseDirectory.in(LocalRootProject).value.getAbsolutePath,
     "-diagrams"
   ),*/
-  git.remoteRepo := gitRemoteRepo,
+  git.remoteRepo := REPO,
   includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
 )
 
@@ -55,7 +59,6 @@ lazy val docs = (project in file("docs"))
   .settings(fizzdocSettings)
   .settings(noPublishSettings)
 //  .settings(unidocSettings)
-  .settings(site.settings)
   .settings(ghpages.settings)
   .settings(docSettings)
   .settings(tutSettings)
