@@ -19,7 +19,14 @@ This template builds using SBT, with the following sub-projects:
 
 - add an orphan `gh-pages` branch according to the [Github guide](https://help.github.com/articles/creating-project-pages-manually/). Go back immediately to the master branch: you never need to edit manually the `gh-pages` branch.
 
-- run `compile` and `ghpages-synch-local`, which will ...
+- in SBT, check that the project compiles with `compile`,
+
+- check that the tutorials compile with `tut`,
+
+- try a local publication with `ghpages-synch-local`. If this command fails for whatever reason,
+  clean the local `~/.sbt/ghpages/XXX` directory created during the aborted generation.
+
+
 
 ### Copyright and License
 
