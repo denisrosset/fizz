@@ -1,0 +1,10 @@
+name: FizzBuzz documentation
+markdown: redcarpet
+highlighter: pygments
+baseurl: /fizzdoc
+apidocs: /fizzdoc/api/
+sources: https://github.com/denisrosset/checked-doc-template/blob/master
+
+collections:
+  tut:
+    output: true
