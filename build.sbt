@@ -1,85 +1,76 @@
-//import com.typesafe.sbt.SbtSite.SiteKeys._
 import com.typesafe.sbt.site.util.SiteHelpers
 import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
-//import sbtunidoc.Plugin.UnidocKeys._
+import sbtunidoc.Plugin.UnidocKeys._
 
 // **************************************
 // Tutorial: edit the following variables
 
-val REPO = "git@github.com:denisrosset/fizzdoc.git"
-val NAME = "fizzdoc"
+val USER = "denisrosset"
+val REPO = "fizz"
+val NAME = "fizz"
 val ORG = "org.fizzorg"
+
+val APIDIR = "latest/api"
+val TUTDIR = "_tut"
+
+// derived info
+lazy val GITURL = s"git@github.com:$USER/$REPO.git"
+lazy val SCMINFO = ScmInfo(url(s"https://github.com/$USER/$REPO"), s"scm:git:$GITURL")
+lazy val APIURL = s"http://$USER.github.io/$REPO/$APIDIR"
 
 // **************************************
 
+// custom keys used by sbt-site
 lazy val tutorialSubDirName = settingKey[String]("Website tutorial directory")
+lazy val apiSubDirName = settingKey[String]("Unidoc API directory")
 
-lazy val buildSettings = Seq(
-  name := "fizzdoc",
-  organization := ORG,
-  scalaVersion := "2.11.8"
-)
+// root project
 
-//lazy val fizzdocDoctestSettings = Seq(
-//  doctestWithDependencies := false
-//) ++ doctestSettings
+lazy val fizz = project.in(file("."))
+  .settings(moduleName := "fizz")
+  .settings(commonSettings)
+  .settings(noPublishSettings) // the root project is not published,
+  .aggregate(core, docs)       // aggregates the two projects
+  .dependsOn(core)             // but there is no code in the `docs` project to depend upon
 
-lazy val commonSettings = Seq(
-  scalacOptions ++= commonScalacOptions,
-  scalacOptions in (Compile, doc) := (scalacOptions in (Compile, doc)).value.filter(_ != "-Xfatal-warnings")
-) ++ warnUnusedImport
-
-lazy val commonJvmSettings = Seq(
-  testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oDF")
-// currently sbt-doctest doesn't work in JS builds, so this has to go in the
-// JVM settings. https://github.com/tkawachi/sbt-doctest/issues/52
-) //++ fizzdocDoctestSettings
-
-lazy val fizzdocSettings = buildSettings ++ commonSettings ++ commonJvmSettings
-
-lazy val docSettings = Seq(
-  autoAPIMappings := true,
-  //  site.addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), "api"),
-  tutorialSubDirName := "_tut",
-  addMappingsToSiteDir(tut, tutorialSubDirName),
-  ghpagesNoJekyll := false,
-  siteMappings += file("CONTRIBUTING.md") -> "contributing.md",
-/*  scalacOptions in (ScalaUnidoc, unidoc) ++= Seq(
-    "-Xfatal-warnings",
-    "-doc-source-url", scmInfo.value.get.browseUrl + "/tree/master€{FILE_PATH}.scala",
-    "-sourcepath", baseDirectory.in(LocalRootProject).value.getAbsolutePath,
-    "-diagrams"
-  ),*/
-  git.remoteRepo := REPO,
-  includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
-)
+// docs project
+// Customize: enable/disable tut, unidoc
 
 lazy val docs = (project in file("docs"))
-  .settings(moduleName := "fizzdoc-docs")
-  .settings(fizzdocSettings)
-  .settings(noPublishSettings)
-//  .settings(unidocSettings)
-  .settings(ghpages.settings)
-  .settings(docSettings)
-  .settings(tutSettings)
-  .settings(tutScalacOptions ~= (_.filterNot(Set("-Ywarn-unused-import", "-Ywarn-dead-code"))))
-  .settings(commonJvmSettings)
-  .dependsOn(core)
-
-lazy val fizzdoc = project.in(file("."))
-  .settings(moduleName := "fizzdoc")
-  .settings(fizzdocSettings)
-  .settings(noPublishSettings)
-  .aggregate(core, docs)
+  .settings(moduleName := "fizz-docs")
+  .settings(commonSettings)
+  .settings(noPublishSettings)   // the docs module is not published
+  .settings(tutConfig)           // enable tut
+  .settings(unidocConfig)        // enable unidoc
+  .settings(siteConfig)          // parameters for sbt-site and sbt-ghpages
   .dependsOn(core)
 
 lazy val core = project.in(file("core"))
-  .settings(moduleName := "fizzdoc-core")
-  .settings(fizzdocSettings:_*)
-  .settings(commonJvmSettings:_*)
+  .settings(moduleName := "fizz-core")
+  .settings(commonSettings:_*)
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// Base Build Settings - Should not need to edit below this line. 
+lazy val commonSettings = Seq(
+  name := NAME,
+  organization := ORG,
+  scalaVersion := "2.11.8",
+  scmInfo := Some(SCMINFO),
+  apiURL := Some(url(APIURL)), // enable external projects to link to our Scaladoc
+  scalacOptions in (Compile, doc) := (scalacOptions in (Compile, doc)).value.filter(_ != "-Xfatal-warnings")
+) ++ doctestConfig             // enable doctest
+
+// General configuration of sbt-site and sbt-ghpages
+
+lazy val siteConfig = Seq(
+  siteMappings ++= Seq(
+    file("CONTRIBUTING.md") -> "contributing.md",
+    file("LICENSE.md") -> "license.md"
+  ),
+  ghpagesNoJekyll := false,
+  git.remoteRepo := GITURL,
+  includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
+) ++ ghpages.settings
+
+// Disable publishing
 
 lazy val noPublishSettings = Seq(
   publish := (),
@@ -87,34 +78,53 @@ lazy val noPublishSettings = Seq(
   publishArtifact := false
 )
 
-lazy val commonScalacOptions = Seq(
-  "-deprecation",
-  "-encoding", "UTF-8",
-  "-feature",
-  "-language:existentials",
-  "-language:higherKinds",
-  "-language:implicitConversions",
-  "-language:experimental.macros",
-  "-unchecked",
-  "-Xfatal-warnings",
-  "-Xlint",
-  "-Yinline-warnings",
-  "-Yno-adapted-args",
-  "-Ywarn-dead-code",
-  "-Ywarn-numeric-widen",
-  "-Ywarn-value-discard",
-  "-Xfuture"
+// *******************************************************************
+// To use Doctest, append the settings below to all concerned projects
+
+// Customize: the Scalatest version
+
+lazy val doctestConfig = doctestSettings ++ Seq(
+  doctestTestFramework := DoctestTestFramework.ScalaTest, // opinion: we default to Scalatest
+  // the following two lines specify an explicit Scalatest version and tell sbt-doctest to
+  // avoid importing new dependencies
+  libraryDependencies ++= Seq(
+    "org.scalatest" %% "scalatest" % "3.0.0-M7" % "test",
+    "org.scalacheck" %% "scalacheck" % "1.12.5" % "test"
+  ),
+  doctestWithDependencies := false
 )
 
-lazy val warnUnusedImport = Seq(
-  scalacOptions ++= {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, 10)) =>
-        Seq()
-      case Some((2, n)) if n >= 11 =>
-        Seq("-Ywarn-unused-import")
-    }
-  },
-  scalacOptions in (Compile, console) ~= {_.filterNot("-Ywarn-unused-import" == _)},
-  scalacOptions in (Test, console) <<= (scalacOptions in (Compile, console))
+// **************************************************************
+// To use Unidoc, append the settings below to the `docs` project
+
+// Customize: the `inProjects(...)` list
+// Customize: remove hierarchy diagram generation if Graphviz is not installed
+
+lazy val unidocConfig = unidocSettings ++ Seq(
+  apiSubDirName := APIDIR,
+  // sbt-site will use the generated documentation
+  addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), apiSubDirName),
+  // projects to include
+  unidocProjectFilter in (ScalaUnidoc, unidoc) := inProjects(core),
+  // enable automatic linking to the external Scaladoc of our own managed dependencies
+  autoAPIMappings := true,
+  scalacOptions in (ScalaUnidoc, unidoc) ++= Seq(
+    // we want warnings to be fatal (on broken links for example)
+    "-Xfatal-warnings", 
+    // link to source code, yes that's an euro symbol
+    "-doc-source-url", scmInfo.value.get.browseUrl + "/tree/master€{FILE_PATH}.scala",
+    "-sourcepath", baseDirectory.in(LocalRootProject).value.getAbsolutePath,
+    // generate type hierarchy diagrams, runs graphviz
+    "-diagrams"
+  )
+)
+
+
+// ***********************************************************
+// To use Tut, append the settings below to the `docs` project
+
+lazy val tutConfig = tutSettings ++ Seq(
+  tutorialSubDirName := TUTDIR,
+  addMappingsToSiteDir(tut, tutorialSubDirName),
+  tutScalacOptions ~= (_.filterNot(Set("-Ywarn-unused-import", "-Ywarn-dead-code")))
 )

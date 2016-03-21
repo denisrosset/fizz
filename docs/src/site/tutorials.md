@@ -10,4 +10,3 @@ section: "tutorials"
 - [{{x.title}}]({{site.baseurl}}{{x.url}})
 {% endif %}
 {% endfor %}
-

@@ -4,38 +4,47 @@
 
 This template builds using SBT, with the following sub-projects:
 
-- `fizzdoc` is the root project,
+- `fizz` is the root project,
 - `core` contains the Scala code files for the project,
 - `docs` contains the website and the `tut` documentation. 
 
 In the documentation below, we use the following placeholders:
 
-- `NAME` is the name of the project (default: `fizzdoc`), for simplicity, we assume
-  this coincides with the name of the GitHub repository,
 - `USER` is your GitHub user name,
-- `REPO = git@github.com:USER/NAME.git` is the name of the remote repository,
-- `ORG` is the name of the organization used in `build.sbt` (default: `org.fizzorg`),
-- `HASH` is an unique hash generated automatically by `sbt-site`/`sbt-ghpages`.
+- `REPO` is the name of the Github repository (default: `fizz`),
+- `NAME` is the name of the Scala project (default: `fizz`),
+- `ORG` is the organization name specified in `build.sbt` (default: `org.fizzorg`).
 
 ### 1. Install the required tools
 
-Install `Jekyll` and `Pygments`. 
+Install a local version of [Jekyll](https://jekyllrb.com/) and [Graphviz](http://www.graphviz.org/).
 
-### 2. Create a local copy of Fizzdoc 
+### 2. Create a local copy of Fizz
 
-- create a new empty Github repository. Add the files from the Fizzdoc `master` branch to the
-  `master` branch of your repository. I advise *against* forking the repository;
-  thus, all your actions with Git will be explicit.
-  
-- change the `REPO` variable at the top of the `build.sbt` with the URL of your repository,
+- create a new empty Github repository named `fizz` (will make your life easier at first),
+
+- add the files from the Fizz `master` branch to the `master` branch of your repository. 
+  Do not fork the repository; that way, all your actions with Git will be explicit.
+  Part of the SBT magic involved here will manipulate your Git repository.
+
+- change the `USER` variable at the top of the `build.sbt` with your Github username,
+
+- update the Jekyll configuration in the `docs/src/site/_config.yml` file,
 
 - check that the project compiles with `sbt compile`,
 
+- check that the tests run, including doctests, with `sbt test`,
+
 - check that the tutorials compile with `sbt tut`.
+
+- check that the documentation is generated with `sbt unidoc`.
+
+- push your master branch to Github.
 
 ### 3. Create the `gh-pages` branch
 
-Create the `gh-pages` branch and push it to GitHub, and checkout back to `master` afterwards:
+Following the instructions below, create an empty `gh-pages` branch and push it to GitHub.
+Checkout back immediately to `master` afterwards:
 
 ```shell
 git checkout --orphan gh-pages                # new local orphan branch
@@ -47,19 +56,21 @@ git checkout master
 
 ### 4. Local test
 
-- try a local publication with `ghpages-synch-local`. If this command fails for whatever reason,
-  clean the local `~/.sbt/ghpages/HASH/ORG/NAME` directory created during the aborted generation.
+- try a local publication with `sbt ghpages-synch-local`. A temporary directory will be created under
+  `~/.sbt/ghpages/HASH/ORG/NAME`, where `HASH` is an hexadecimal hash. If this command fails for whatever reason,
+  clean this directory to restart the process from a clean state.
 
 - once `ghpages-synch-local` succeeds, launch `jekyll -serve` from the `~/.sbt/ghpages/HASH/ORG/NAME`
-  directory. Navigate to the local URL http://127.0.0.1:4000/fizzdoc .
+  directory. Navigate to the local URL http://127.0.0.1:4000/fizz .
   
-Note: the preview task from `sbt-site` does not work with this template.
+Note: the preview task from `sbt-site` will not work with the current configuration. If you find a
+better way, please tell me.
 
 ### 5. Online test
 
 - run `sbt ghpages-push-site`.
 
-- navigate to `http://USER.github.io/NAME` .
+- navigate to `http://USER.github.io/REPO` .
 
 ### Copyright and License
 
