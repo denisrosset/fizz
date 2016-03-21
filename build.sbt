@@ -62,8 +62,7 @@ lazy val commonSettings = Seq(
 
 lazy val siteConfig = ghpages.settings ++ Seq(
   siteMappings ++= Seq(
-    file("CONTRIBUTING.md") -> "contributing.md",
-    file("LICENSE.md") -> "license.md"
+    file("CONTRIBUTING.md") -> "contributing.md"
   ),
   ghpagesNoJekyll := false,
   git.remoteRepo := GITURL,
