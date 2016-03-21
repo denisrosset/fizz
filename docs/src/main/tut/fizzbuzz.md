@@ -2,8 +2,8 @@
 layout: default
 title:  "FizzBuzz"
 section: "tutorials"
-source: "core/src/main/scala/fizzdoc/FizzBuzz.scala"
-scaladoc: "#fizzdoc.FizzBuzz"
+source: "core/src/main/scala/fizz/FizzBuzz.scala"
+scaladoc: "#fizz.FizzBuzz"
 ---
 # FizzBuzz
 
@@ -14,7 +14,7 @@ scaladoc: "#fizzdoc.FizzBuzz"
 The standard FizzBuzz test includes integers up to 100.
 
 ```tut:silent
-import fizzdoc.FizzBuzz
+import fizz.FizzBuzz
 val stdFB = FizzBuzz.sequence(100)
 ```
 

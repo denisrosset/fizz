@@ -1,4 +1,4 @@
-package fizzdoc
+package fizz
 
 /** Base trait defining the strings used in [[FizzBuzz]].
   * 
@@ -18,7 +18,7 @@ object FizzBuzz extends FizzBuzzStrings {
     * 
     * Example:
     * {{{
-    * scala> import fizzdoc.FizzBuzz
+    * scala> import fizz.FizzBuzz
     * scala> FizzBuzz.sequence(3)
     * res0: Seq[String] = Vector(1, 2, Fizz)
     * }}}
