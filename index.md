@@ -16,7 +16,3 @@ contributions are welcomed as we look to improve the project. </p> </div>
 Fizz is currently available for Scala 2.11.
 
 <div class="msg warn"> <p><strong> Add instructions on how to get started. </strong></p> </div>
-
-# License
-
-Fizz is published under the [following license](license.html).
