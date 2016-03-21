@@ -1,1 +1,1 @@
-Index.PACKAGES = {"fizzdoc" : [{"object" : "fizzdoc\/FizzBuzz$.html", "name" : "fizzdoc.FizzBuzz"}, {"trait" : "fizzdoc\/FizzBuzzStrings.html", "name" : "fizzdoc.FizzBuzzStrings"}]};
+Index.PACKAGES = {"fizz" : [{"object" : "fizz\/FizzBuzz$.html", "name" : "fizz.FizzBuzz"}, {"trait" : "fizz\/FizzBuzzStrings.html", "name" : "fizz.FizzBuzzStrings"}]};
