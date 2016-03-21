@@ -1,4 +1,15 @@
-## Fizzdoc
+## Fizz
+
+An opinionated Scala project template to publish Github pages including:
+
+- API documentation using [sbt-unidoc](https://github.com/sbt/sbt-unidoc),
+- type-checked tutorials using [tut](https://github.com/tpolecat/tut),
+- documentation string tests using [sbt-doctest](https://github.com/tkawachi/sbt-doctest),
+
+automatically published using [sbt-site](https://github.com/sbt/sbt-site) and
+[sbt-ghpages](https://github.com/sbt/sbt-ghpages).
+
+Have a look at the [generated site](http://denisrosset.github.io/fizz/index.html).
 
 ### Structure of this Fizzdoc template
 
@@ -71,6 +82,10 @@ better way, please tell me.
 - run `sbt ghpages-push-site`.
 
 - navigate to `http://USER.github.io/REPO` .
+
+### 6. When publishing a new release
+
+- do not forget to run again `sbt unidoc` and `sbt tut`.
 
 ### Copyright and License
 
