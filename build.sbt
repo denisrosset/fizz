@@ -60,7 +60,7 @@ lazy val commonSettings = Seq(
 
 // General configuration of sbt-site and sbt-ghpages
 
-lazy val siteConfig = Seq(
+lazy val siteConfig = ghpages.settings ++ Seq(
   siteMappings ++= Seq(
     file("CONTRIBUTING.md") -> "contributing.md",
     file("LICENSE.md") -> "license.md"
@@ -68,7 +68,7 @@ lazy val siteConfig = Seq(
   ghpagesNoJekyll := false,
   git.remoteRepo := GITURL,
   includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
-) ++ ghpages.settings
+)
 
 // Disable publishing
 
