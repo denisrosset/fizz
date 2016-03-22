@@ -11,13 +11,15 @@ automatically published using [sbt-site](https://github.com/sbt/sbt-site) and
 
 Have a look at the [generated site](http://denisrosset.github.io/fizz/index.html).
 
-### Structure of this Fizzdoc template
+For single project builds, use the [single-project template](http://github.com/denisrosset/fizzmono).
+
+### Structure of this Fizz documentation template
 
 This template builds using SBT, with the following sub-projects:
 
 - `fizz` is the root project,
 - `core` contains the Scala code files for the project,
-- `docs` contains the website and the `tut` documentation. 
+- `docs` contains the website and the `tut` documentation.
 
 In the documentation below, we use the following placeholders:
 
@@ -82,10 +84,6 @@ better way, please tell me.
 - run `sbt ghpages-push-site`.
 
 - navigate to `http://USER.github.io/REPO` .
-
-### 6. When publishing a new release
-
-- do not forget to run again `sbt unidoc` and `sbt tut`.
 
 ### Copyright and License
 
